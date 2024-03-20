@@ -1,0 +1,59 @@
+create database Store;
+create table countries(
+   code int(10) primary key ,
+    name varchar(20) unique ,
+    continent_name varchar(20) not null
+    );
+
+create table users(
+    id int(10) primary key,
+    full_name varchar(20),
+    email varchar(20) unique ,
+    gender char(1)check ( gender='f'or gender='m'),
+    data_of_birth varchar(15),
+    created_at datetime,
+    country_code int(10),
+    foreign key (country_code)references countries(code)
+);
+
+create table orders(
+id int(10) primary key ,
+user_id int(10),
+foreign key (user_id)references users(id),
+status varchar(6) check ('start' or 'finish'),
+created_at TIMESTAMP default CURRENT_TIMESTAMP
+);
+
+create table products(
+id int(10)primary key ,
+ name varchar(10) not null ,
+ price int default 0,
+ status varchar(10) check ( 'valid'or 'expired' ),
+ created_at TIMESTAMP default CURRENT_TIMESTAMP
+);
+
+
+create table  order_products(
+order_id int(10),
+ foreign key (order_id)references orders(id) ,
+proudect_id int(10),
+foreign key (proudect_id)references products(id),
+quantity int default 0
+);
+
+
+insert into countries values (1,'lamia','kingdom saudi arabia');
+insert into users values (1,'lamia ahmed alyami','lamia@hotmail.com','f','1994-8-20','2024-03-20 12:00:00',1);
+insert into products values (1234,'book',100,'valid',default);
+insert into orders values (1,1,'start',default);
+insert into order_products values (1,1234,1);
+select * from countries;
+select * from users;
+select * from products;
+select * from orders;
+select * from order_products;
+update countries set continent_name='EAM' where code ='1';
+
+set foreign_key_checks =0;
+DELETE FROM products
+WHERE id = '1234';
